@@ -1,7 +1,15 @@
-FROM node
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY . .
-EXPOSE 3000
-CMD ["node", "server.js"]
+pipeline {
+    agent {
+        docker {
+            image 'node:lts-buster-slim' 
+            args '-p 3000:3000' 
+        }
+    }
+    stages {
+        stage('Build') { 
+            steps {
+                sh 'npm install' 
+            }
+        }
+    }
+}
